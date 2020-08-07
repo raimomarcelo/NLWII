@@ -111,6 +111,7 @@
 .logo-container h2 {
  text-align: initial;
  font-size: 3.6rem;
+ color: var( --color-title-in-primary);
 
 }
 

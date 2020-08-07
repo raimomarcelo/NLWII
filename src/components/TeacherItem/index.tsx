@@ -2,41 +2,56 @@ import React from 'react';
 
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
-import './styles.css';
+import './styles.css'
+import api from '../../services/api';
 
-function TeacherItem () {
-    return (
-        <article className="teacher-item">
-        <header>
-            <img src="https://avatars3.githubusercontent.com/u/11845330?s=460&u=d82de26a3da2a8dd4785946e6789ef6a4dc68ef8&v=4" alt="Marcelo Raimo"/>
+export interface Teacher {
+  id: number;
+  avatar: string;
+  bio: string;
+  cost: number;
+  name: string;
+  subject: string;
+  whatsapp: string;
+}
+
+interface TeacherItemProps {
+  teacher: Teacher;
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
+  function createNewConnection() {
+    api.post('connections', {
+      user_id: teacher.id
+    });
+  }
+  
+  return (
+    <article className="teacher-item">
+      <header>
+        <img src={teacher.avatar} alt={teacher.name} />
         <div>
-            <strong>
-                Marcelo Raimo
-            </strong>
-            <span>
-                SAP SFSF Consultant
-            </span>
+          <strong>{teacher.name}</strong>
+          <span>{teacher.subject}</span>
         </div>
-        </header>
+      </header>
+
+      <p>
+        {teacher.bio}
+      </p>
+
+      <footer>
         <p>
-        Atualmente trabalho como Consultor de Implementação, SAP SuccessFactors. Grande experiência na implementação do módulo Recruiting Management, Recruiting Marketing e no processo de Atração & Seleção e Desenvolvimento de Pessoas em empresas de grande porte. 
-        <br/><br/>
-        Experiências também nos módulos Employee Central, People Profile, Performance Goals, Succession Development, Learning, SAP-Jam.
+          Preço/hora
+  <strong>R$ {teacher.cost}</strong>
         </p>
-        <footer>
-            <p>
-             Preço/hora
-             <strong>
-                 R$ 95,00
-             </strong>
-            </p>
-            <button type="button">
-                <img src={whatsappIcon} alt="Entrar em contato"/>
-                Entrar em contato
-            </button>
-        </footer>
+        <a onClick={createNewConnection} href={`https://wa.me/${teacher.whatsapp}`} type="button">
+          <img src={whatsappIcon} alt="Whatsapp" />
+        Entrar em contato
+      </a>
+      </footer>
     </article>
-    )
+  );
 }
 
 export default TeacherItem;
